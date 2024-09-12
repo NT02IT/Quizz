@@ -1,0 +1,6 @@
+QuizzClient/target/
+QuizzClient/dependency-reduced-pom.xml
+QuizzClient/bin/
+QuizzServer/target/
+QuizzServer/dependency-reduced-pom.xml
+QuizzServer/bin/
