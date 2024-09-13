@@ -20,7 +20,7 @@ import data.SubmissionAccess;
 import utils.SQLUtils;
 
 public class StartServer {
-	
+
 	private HashMap<Socket, String> clients;
 	private ServerSocket serverSocket;
 	private final int port;
@@ -31,13 +31,14 @@ public class StartServer {
 		try {
 			this.serverSocket = new ServerSocket(port);
 			new Thread() {
-				@Override public void run() {
+				@Override
+				public void run() {
 					try {
 						while (true) {
 							new ThreadServer(serverSocket.accept(), clients, exam).start();
 						}
 					} catch (SocketException e) {
-						if(serverSocket.isClosed())
+						if (serverSocket.isClosed())
 							System.out.println("Connection Closed.");
 					} catch (IOException e) {
 						System.err.println("Accept failed.");
@@ -48,12 +49,12 @@ public class StartServer {
 			throw new IOException("Could not listen on port: " + port);
 		}
 	}
-	
+
 	public void shutdownServer() throws IOException {
 		try {
 			serverSocket.close();
 		} catch (IOException e) {
-            throw new IOException("Could not close port: " + port);
+			throw new IOException("Could not close port: " + port);
 		}
 	}
 
@@ -93,9 +94,8 @@ class ThreadServer extends Thread {
 		Submission studentSubmission = null;
 
 		try (
-			ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-			ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())
-		) {
+				ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+				ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())) {
 			while (true) {
 				Object dataReceived = inputStream.readObject();
 				System.out.println(dataReceived);
@@ -109,13 +109,21 @@ class ThreadServer extends Thread {
 				}
 			}
 		} catch (SocketException e) {
-			try { new SubmissionAccess().insert(studentSubmission);
-			} catch (SQLException sql_ex) { SQLUtils.printSQLException(sql_ex); }
+			try {
+				new SubmissionAccess().insert(studentSubmission);
+			} catch (SQLException sql_ex) {
+				SQLUtils.printSQLException(sql_ex);
+			}
 
-			clients.put(socket, studentInfo + " [Score: "+studentSubmission.getScore()+"]");
+			clients.put(socket, studentInfo + " [Score: " + studentSubmission.getScore() + "]");
 
-			try { socket.close();
-			} catch (IOException e1) { e1.printStackTrace(); }
-		} catch (Exception e) { e.printStackTrace(); }
+			try {
+				socket.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

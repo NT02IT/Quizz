@@ -3,7 +3,6 @@ package data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
 import business.model.Score;
 import business.model.Student;
 import utils.SQLUtils;
@@ -55,7 +54,7 @@ public class StudentAccess implements DataAccess<Student> {
 	public boolean delete(String... primaryKeyValues) throws SQLException {
 		connection = SQLUtils.getConnection();
 		boolean i = connection.createStatement().executeUpdate(
-					"DELETE FROM Person WHERE PersonID = 'ST" + primaryKeyValues[0] + "'") >= 1;
+				"DELETE FROM Person WHERE PersonID = 'ST" + primaryKeyValues[0] + "'") >= 1;
 		SQLUtils.closeConnection(connection);
 		return i;
 	}
@@ -64,11 +63,11 @@ public class StudentAccess implements DataAccess<Student> {
 	public Student get(String... primaryKeyValues) throws SQLException {
 		Student student = get(Student.class,
 				"SELECT Students.StudentID, Person.* FROM Students"
-				+ " INNER JOIN Person ON Students.PersonID = Person.PersonID",
+						+ " INNER JOIN Person ON Students.PersonID = Person.PersonID",
 				"Students.StudentID", primaryKeyValues[0]);
 		student.setScores(getList(Score.class,
 				"SELECT Exams.ExamID, Score, SubjectID FROM Submissions"
-				+ " INNER JOIN Exams ON Submissions.ExamID = Exams.ExamID",
+						+ " INNER JOIN Exams ON Submissions.ExamID = Exams.ExamID",
 				"StudentID", student.getStudentID()));
 		return student;
 	}

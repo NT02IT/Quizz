@@ -1,6 +1,12 @@
 QuizzClient/target/
 QuizzClient/dependency-reduced-pom.xml
 QuizzClient/bin/
+QuizzClient/.classpath
+QuizzClient/.project
+QuizzClient/dependency-reduced-pom.xml
 QuizzServer/target/
 QuizzServer/dependency-reduced-pom.xml
 QuizzServer/bin/
+QuizzServer/.classpath
+QuizzServer/.project
+QuizzServer/dependency-reduced-pom.xml
