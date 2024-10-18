@@ -47,6 +47,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import utils.DateTime;
 import utils.Notification;
+
 import utils.uiUtils;
 
 public class ExamController implements Initializable {
@@ -75,6 +76,7 @@ public class ExamController implements Initializable {
 	private ObservableList<Question> observableList_Question;
 	@FXML
 	private DatePicker DatePicker_Exam = new DatePicker();
+
 	@FXML
 	private TextField textFile_Exam = new TextField();
 
@@ -262,6 +264,9 @@ public class ExamController implements Initializable {
 
 			selectedItems = tableView_ExamAdd.getSelectionModel().getSelectedItems();
 			selectionModel.selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+				if (newValue != null && selectedItems.size() == 1)
+					ExamController.question_Current = newValue;
+
 				if (newValue != null && selectedItems.size() == 1)
 					ExamController.question_Current = newValue;
 
@@ -536,6 +541,10 @@ public class ExamController implements Initializable {
 			String month = String.valueOf(Date_Exam_Add.getValue().getMonthValue());
 			String day = String.valueOf(Date_Exam_Add.getValue().getDayOfMonth());
 
+			if (year == null || month == null || day == null) {
+				Notification.Error(Notification.Error, "Chọn ngày kiểm tra");
+			}
+
 			String hours = Spinner_Hours_ExamAdd.getValue() >= 10 ? String.valueOf(Spinner_Hours_ExamAdd.getValue())
 					: "0" + String.valueOf(Spinner_Hours_ExamAdd.getValue());
 
@@ -554,11 +563,14 @@ public class ExamController implements Initializable {
 					Notification.Error(Notification.Unsuccessfully, "Tạo bài kiểm tra thất bại");
 				else
 					Notification.Infomation(Notification.Successfully, "Tạo bài kiểm tra thành công");
+
 			} catch (SQLException e) {
 				Notification.Error(Notification.Error, "Bài kiểm tra chưa được tạo");
+
 			}
 		} catch (NumberFormatException e) {
-			Notification.Error(Notification.Error, "Thời gian hoặc thời gian bắt đầu hoặc điểm là số nguyên");
+			Notification.Error(Notification.Error, "Thời gian làm và thời gian bắt đầu phải là số nguyên");
+
 		}
 	}
 

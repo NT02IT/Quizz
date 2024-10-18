@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import business.model.Question;
@@ -594,6 +595,7 @@ public class QuestionController implements Initializable {
 			Notification.Infomation(Notification.Default, "Tên môn rỗng");
 			return;
 		}
+
 		try {
 			Boolean check_AddSubject = quesManager
 					.addSubject(new Subject(subject_ID_Question.getText(), LoginController.teacher_Current,
@@ -615,9 +617,11 @@ public class QuestionController implements Initializable {
 
 	@FXML
 	void buttonSearchQuestion(ActionEvent event) {
+
 		String content = searchQuestion.getText() != null ? searchQuestion.getText() : "";
 		String chapter = chapter_Question.getText() != null ? chapter_Question.getText() : "";
 		String difficulty = dificult_Question.getValue() != null ? dificult_Question.getValue() : "Easy";
+
 		switch (difficulty) {
 			case "Hard":
 				difficulty = "3";
@@ -635,10 +639,12 @@ public class QuestionController implements Initializable {
 		List<Question> list_SearchQuestionInSubject = quesManager.searchQuestionInSubject(subject_Current, content,
 				chapter,
 				difficulty);
+
 		if (list_SearchQuestionInSubject.isEmpty() || list_SearchQuestionInSubject == null) {
 			Notification.Infomation(Notification.Default, "Không có dữ liệu");
 			tableView_Question.getItems().clear();
 		} else {
+
 			tableView_Question.getItems().clear();
 			tableView_Question.setItems(loadQuestion_tableView(list_SearchQuestionInSubject));
 		}
@@ -651,6 +657,7 @@ public class QuestionController implements Initializable {
 			Notification.Error(Notification.Unsuccessfully, "Xóa môn thất bại");
 			return;
 		}
+
 		choose_Subject_Question.getItems().remove(subject_Current);
 		choose_Subject_Question.setValue(null);
 		tableView_Question.getItems().clear();
