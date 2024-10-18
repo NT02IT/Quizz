@@ -33,7 +33,7 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Button>
-      <Button layoutY="259.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="250.0" text="Statistics">
+      <!-- <Button layoutY="259.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="250.0" text="Statistics">
          <styleClass>
             <String fx:value="button-in-main" />
             <String fx:value="button_hover" />
@@ -51,7 +51,7 @@
          <padding>
             <Insets left="40.0" />
          </padding>
-      </Button>
+      </Button> -->
       <Button layoutY="314.0" mnemonicParsing="false" onAction="#Back_Exam" prefHeight="55.0" prefWidth="250.0" text="Exam">
          <styleClass>
             <String fx:value="button-in-main" />
@@ -109,7 +109,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button layoutY="479.0" mnemonicParsing="false" onAction="#Back_Group" prefHeight="55.0" prefWidth="250.0" text="Group">
+      <Button layoutY="259" mnemonicParsing="false" onAction="#Back_Group" prefHeight="55.0" prefWidth="250.0" text="Group">
          <styleClass>
             <String fx:value="button-in-main" />
             <String fx:value="button_hover" />

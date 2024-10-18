@@ -39,7 +39,7 @@ public class GroupManager {
 		} catch (SQLException e) {
 			SQLUtils.printSQLException(e);
 			if (e.getErrorCode() == MysqlErrorNumbers.ER_DUP_ENTRY)
-				throw new SQLException("GroupID: '"+newGroup.getGroupID()+"' already exists", e);
+				throw new SQLException("GroupID: '" + newGroup.getGroupID() + "' already exists", e);
 		}
 		return false;
 	}
@@ -70,6 +70,16 @@ public class GroupManager {
 		}
 		return null;
 	}
+
+	public List<Student> getStudentsFromGroup2(Group group) {
+		try {
+			return new GroupAccess().getStudents2(group);
+		} catch (SQLException e) {
+			SQLUtils.printSQLException(e);
+		}
+		return null;
+	}
+
 	public List<Student> searchStudentsFromGroup(Group group, String keyword) {
 		try {
 			return new GroupAccess().searchStudents(group, keyword);
@@ -78,15 +88,15 @@ public class GroupManager {
 		}
 		return null;
 	}
-	
+
 	public boolean addStudent(Group group, Student student) throws SQLException {
 		try {
 			return new StudentAccess().insert(student) &&
-			new GroupStudentAccess().addStudent(group.getGroupID(), student.getStudentID());
+					new GroupStudentAccess().addStudent(group.getGroupID(), student.getStudentID());
 		} catch (SQLException e) {
 			SQLUtils.printSQLException(e);
 			if (e.getErrorCode() == MysqlErrorNumbers.ER_DUP_ENTRY)
-				throw new SQLException("StudentID: '"+student.getStudentID()+"' already exists", e);
+				throw new SQLException("StudentID: '" + student.getStudentID() + "' already exists", e);
 		}
 		return false;
 	}
@@ -97,11 +107,12 @@ public class GroupManager {
 		} catch (SQLException e) {
 			SQLUtils.printSQLException(e);
 			if (e.getErrorCode() == MysqlErrorNumbers.ER_DUP_ENTRY)
-				throw new SQLException("StudentID: '"+studentID+"' already exists in Group(ID): '"+groupID+"'", e);
+				throw new SQLException("StudentID: '" + studentID + "' already exists in Group(ID): '" + groupID + "'",
+						e);
 		}
 		return false;
 	}
-	
+
 	public boolean removeStudentFromGroup(Group group, Student student) {
 		try {
 			new GroupStudentAccess().removeStudent(group.getGroupID(), student.getStudentID());
@@ -113,7 +124,7 @@ public class GroupManager {
 		}
 		return false;
 	}
-	
+
 	public boolean editStudent(Student student) {
 		try {
 			return new StudentAccess().update(student);
@@ -138,8 +149,8 @@ public class GroupManager {
 						SQLUtils.printSQLException(e1);
 						stat = false;
 					}
-				}
-				else stat = false;
+				} else
+					stat = false;
 			}
 		}
 		return stat;
@@ -203,25 +214,44 @@ class StudentExcelWriter extends ExcelWriter {
 		CellStyle cellStyle = createStyleForHeader(sheet);
 		Row row = sheet.createRow(rowIndex);
 		Cell cell = null;
-		cell = row.createCell(0); cell.setCellStyle(cellStyle); cell.setCellValue("ID");
-		cell = row.createCell(1); cell.setCellStyle(cellStyle); cell.setCellValue("First Name");
-		cell = row.createCell(2); cell.setCellStyle(cellStyle); cell.setCellValue("Last Name");
-		cell = row.createCell(3); cell.setCellStyle(cellStyle); cell.setCellValue("Phone");
-		cell = row.createCell(4); cell.setCellStyle(cellStyle); cell.setCellValue("Email");
-		cell = row.createCell(5); cell.setCellStyle(cellStyle); cell.setCellValue("Scores");
+		cell = row.createCell(0);
+		cell.setCellStyle(cellStyle);
+		cell.setCellValue("ID");
+		cell = row.createCell(1);
+		cell.setCellStyle(cellStyle);
+		cell.setCellValue("First Name");
+		cell = row.createCell(2);
+		cell.setCellStyle(cellStyle);
+		cell.setCellValue("Last Name");
+		cell = row.createCell(3);
+		cell.setCellStyle(cellStyle);
+		cell.setCellValue("Phone");
+		cell = row.createCell(4);
+		cell.setCellStyle(cellStyle);
+		cell.setCellValue("Email");
+		cell = row.createCell(5);
+		cell.setCellStyle(cellStyle);
+		cell.setCellValue("Scores");
 	}
 
 	@Override
 	public <T> void writeData(T data, Row row) {
 		Student student = (Student) data;
-		Cell cell = null; int colIndex = 0;
-		cell = row.createCell(colIndex++); cell.setCellValue(student.getStudentID());
-		cell = row.createCell(colIndex++); cell.setCellValue(student.getFirstName());
-		cell = row.createCell(colIndex++); cell.setCellValue(student.getLastName());
-		cell = row.createCell(colIndex++); cell.setCellValue(student.getPhone());
-		cell = row.createCell(colIndex++); cell.setCellValue(student.getEmail());
+		Cell cell = null;
+		int colIndex = 0;
+		cell = row.createCell(colIndex++);
+		cell.setCellValue(student.getStudentID());
+		cell = row.createCell(colIndex++);
+		cell.setCellValue(student.getFirstName());
+		cell = row.createCell(colIndex++);
+		cell.setCellValue(student.getLastName());
+		cell = row.createCell(colIndex++);
+		cell.setCellValue(student.getPhone());
+		cell = row.createCell(colIndex++);
+		cell.setCellValue(student.getEmail());
 		for (Score score : student.getScores()) {
-			cell = row.createCell(colIndex++); cell.setCellValue(score.getScore());
+			cell = row.createCell(colIndex++);
+			cell.setCellValue(score.getScore());
 		}
 	}
 }
